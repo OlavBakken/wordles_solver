@@ -14,7 +14,9 @@ wordsans = wordsfull[:POSSIBLE_ANSWERS]
 tree = GuessTree(wordsans, wordsfull, INITIAL_GUESS) #raise, adieu, watch
 depth = tree.depth()
 
+
 queue = [tree]
+SEARCH_TREE_TARGET.write("{}\n".format(INITIAL_GUESS))
 while queue:
     node = queue.pop()
     for key in node.children:

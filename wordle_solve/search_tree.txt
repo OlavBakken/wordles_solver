@@ -1,3 +1,4 @@
+raise
 raise (0, 2, 0, 1, 0) salon
 raise (2, 0, 1, 1, 1) resin
 raise (1, 0, 0, 1, 2) scree

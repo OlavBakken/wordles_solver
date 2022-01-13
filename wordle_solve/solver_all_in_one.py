@@ -8,7 +8,7 @@
 
 from library import *
 POSSIBLE_ANSWERS = 2315
-INITIAL_GUESS = "watch"
+INITIAL_GUESS = "witch"
 
 wordsfull = [word[:-1] for word in open("wordlist.txt").readlines()]
 wordsans = wordsfull[:POSSIBLE_ANSWERS]
@@ -21,6 +21,7 @@ wordsans = wordsfull[:POSSIBLE_ANSWERS]
 tree = GuessTree(wordsans, wordsfull, INITIAL_GUESS) #raise, adieu, watch
 depth = tree.depth()
 total = 0
+print depth
 
 node = tree
 while True:
