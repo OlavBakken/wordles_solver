@@ -36,10 +36,11 @@ public class GUI extends Panel {
             public void mouseReleased(MouseEvent e) {
                 int x = e.getX() / dx - 1;
                 int y = e.getY() / dy - 1;
-                System.out.printf("trying to move <%d, %d> to <%d, %d>\n", heldPiece.pos.x, heldPiece.pos.y, x, y);
                 if (heldPiece == null) return;
                 if (x > 10 || y > 10) return;
                 game.move(heldPiece, new Position(x, y));
+                if (game.whiteHasWon()) System.out.printf("white has won\n");
+                if (game.blackHasWon()) System.out.printf("black has won\n");
                 heldPiece = null;
             }
 

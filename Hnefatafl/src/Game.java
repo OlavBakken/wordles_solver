@@ -5,7 +5,13 @@ public class Game {
     static final Suit BLACK = Suit.BLACK;
     static final Type KING = Type.KING;
     static final Type PAWN = Type.PAWN;
-    static final Piece UNIVERSAL = new Piece(Suit.UNIVERSAL, null, null);
+    static final TreeSet<Position> CORNERS = new TreeSet<>(List.of(new Position[]{new Position(0, 0),
+                                                                                                        new Position(0, 10),
+                                                                                                        new Position(10, 0),
+                                                                                                        new Position(10, 10)}));
+    static final Position CENTER = new Position(5, 5);
+
+    Piece king;
 
     TreeSet<Piece> pieces;
     TreeMap<Position, Piece> board;
@@ -32,7 +38,7 @@ public class Game {
         //wrong color
         if (piece.color != turn) return false;
 
-        System.out.printf("moving piece\n");
+        System.out.printf("moving piece from %s to %s\n", start, end);
         if (turn == Suit.BLACK) turn = Suit.WHITE;
         else if (turn == Suit.WHITE) turn = Suit.BLACK;
 
@@ -52,7 +58,9 @@ public class Game {
             Piece Squeezer = board.get(new Position(x+2*dx, y+2*dy));
 
             if (defender == null || defender.color == piece.color || defender.type == KING) continue;
-            if (isSqueezing(new Position(x+2*dx, y+2*dy))){
+
+            if (CORNERS.contains(new Position(x+2*dx, y+2*dy))){
+                System.out.println(defender.pos);
                 pieces.remove(defender);
                 board.remove(defender.pos);
             }
@@ -64,24 +72,18 @@ public class Game {
         return true;
     }
 
-    boolean isSqueezing(Position pos){
-        if (pos.x < 0 || pos.x > 10) return true;
-        if (pos.y < 0 || pos.y > 10) return true;
-        if (pos.x == 5 && pos.y == 5) return true;
-        return false;
-    }
-
     boolean whiteHasWon(){
-        return false;
+        return CORNERS.contains(king.pos);
     }
 
     boolean blackHasWon(){
-        for (int x = 0; x < 11; x++){
-            for (int y = 0; y < 11; y++){
-                return false;
-            }
+        int x = king.pos.x, y = king.pos.y;
+        for (int[] dir: directions){
+            int dx = dir[0], dy = dir[1];
+            Position pos = new Position(x+dx, y+dy);
+            if (!(board.containsKey(pos) && board.get(pos).color == BLACK) && !CENTER.equals(pos)) return false;
         }
-        return false;
+        return true;
     }
 
     Game(){
@@ -89,7 +91,8 @@ public class Game {
         board = new TreeMap<>();
 
         // WHITE PIECES
-        pieces.add(new Piece(WHITE, KING, new Position(5, 5)));
+        king = new Piece(WHITE, KING, new Position(5, 5));
+        pieces.add(king);
         pieces.add(new Piece(WHITE, PAWN, new Position(5, 6)));
         pieces.add(new Piece(WHITE, PAWN, new Position(5, 7)));
         pieces.add(new Piece(WHITE, PAWN, new Position(6, 6)));

@@ -10,4 +10,13 @@ public class Position implements Comparable<Position>{
         if (this.x != pos.x) return this.x - pos.x;
         return this.y - pos.y;
     }
+
+    public boolean equals(Position pos){
+        if (pos == null) return false;
+        return (this.compareTo(pos) == 0);
+    }
+
+    public String toString(){
+        return String.format("<%d, %d>", x, y);
+    }
 }
