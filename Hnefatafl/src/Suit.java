@@ -1,4 +1,5 @@
 public enum Suit {
     WHITE,
-    BLACK
+    BLACK,
+    UNIVERSAL
 }

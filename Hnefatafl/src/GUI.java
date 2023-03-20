@@ -10,20 +10,14 @@ public class GUI extends Panel {
     BufferedImage buffer;
     int dx;
     int dy;
-    boolean pieceHeld;
-    int heldX, heldY;
+    Piece heldPiece;
     int mouseX, mouseY;
     int startX, endX, startY, endY;
     boolean executeMove;
     Random random = new Random();
 
-    void doRandomMove(){
-        while (!game.move(random.nextInt(11), random.nextInt(11), random.nextInt(11), random.nextInt(11)));
-    }
-
     GUI(){
         game = new Game();
-        doRandomMove();
         this.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -34,26 +28,19 @@ public class GUI extends Panel {
             public void mousePressed(MouseEvent e) {
                 int x = e.getX() / dx - 1;
                 int y = e.getY() / dy - 1;
-                if (x > 10 || y > 10) return;
-                if (game.board[x][y] == null) return;
-                pieceHeld = true;
-                heldX = x;
-                heldY = y;
+                if (!game.board.containsKey(new Position(x, y))) return;
+                heldPiece = game.board.get(new Position(x, y));
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
                 int x = e.getX() / dx - 1;
                 int y = e.getY() / dy - 1;
-                System.out.printf("trying to move <%d, %d> to <%d, %d>\n", heldX, heldY, x, y);
-                if (!pieceHeld) return;
-                pieceHeld = false;
+                System.out.printf("trying to move <%d, %d> to <%d, %d>\n", heldPiece.pos.x, heldPiece.pos.y, x, y);
+                if (heldPiece == null) return;
                 if (x > 10 || y > 10) return;
-                startX = heldX;
-                startY = heldY;
-                endX = x;
-                endY = y;
-                executeMove = true;
+                game.move(heldPiece, new Position(x, y));
+                heldPiece = null;
             }
 
             @Override
@@ -85,11 +72,6 @@ public class GUI extends Panel {
     @Override
     public void update(Graphics g){
         if (buffer == null) buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
-        if (executeMove){
-            executeMove = false;
-            game.move(startX, startY, endX, endY);
-            doRandomMove();
-        }
         paint(buffer.getGraphics());
         g.drawImage(buffer, 0, 0, null);
     }
@@ -103,19 +85,16 @@ public class GUI extends Panel {
         g.fillRect(0,0, getWidth(), getHeight());
         g.setColor(Color.WHITE);
 
-        for (int x = 0; x < 11; x++){
-            for (int y = 0; y < 11; y++){
-                if (pieceHeld && x == heldX && y == heldY) continue;
-                if (game.board[x][y] == null) continue;
-                if (game.board[x][y].type == Type.KING) g.fillRect((x+1)*dx, (y+1)*dy, dx, dy);
-                else if (game.board[x][y].color == Suit.WHITE) g.fillOval((x+1)*dx, (y+1)*dy, dx, dy);
-                else g.drawOval((x+1)*dx, (y+1)*dy, dx, dy);
-            }
+        for (Piece piece: game.pieces){
+                if (heldPiece != null && heldPiece.equals(piece)) continue;
+                if (piece.type == Type.KING) g.fillRect((piece.pos.x+1)*dx, (piece.pos.y+1)*dy, dx, dy);
+                else if (piece.color == Suit.WHITE) g.fillOval((piece.pos.x+1)*dx, (piece.pos.y+1)*dy, dx, dy);
+                else g.drawOval((piece.pos.x+1)*dx, (piece.pos.y+1)*dy, dx, dy);
         }
 
-        if (pieceHeld){
-            if (game.board[heldX][heldY].type == Type.KING) g.fillRect(mouseX - dx/2, mouseY - dy/2, dx, dy);
-            else if (game.board[heldX][heldY].color == Suit.WHITE) g.fillOval(mouseX - dx/2, mouseY - dy/2, dx, dy);
+        if (heldPiece != null){
+            if (heldPiece.type == Type.KING) g.fillRect(mouseX - dx/2, mouseY - dy/2, dx, dy);
+            else if (heldPiece.color == Suit.WHITE) g.fillOval(mouseX - dx/2, mouseY - dy/2, dx, dy);
             else g.drawOval(mouseX - dx/2, mouseY - dy/2, dx, dy);
         }
     }
