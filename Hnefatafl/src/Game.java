@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Game {
+public class Game implements GameView{
     static final Suit WHITE = Suit.WHITE;
     static final Suit BLACK = Suit.BLACK;
     static final Type KING = Type.KING;
@@ -18,13 +18,21 @@ public class Game {
     Suit turn = Suit.BLACK;
     static final int directions[][] = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 
-    boolean move(Piece piece, Position end){
-        Position start = piece.pos;
+    public Piece pieceAt(Position pos){
+        return board.get(pos);
+    }
+
+    public TreeSet<Piece> getPieces(){
+        return pieces;
+    }
+
+    public boolean move(Position start, Position end){
+        Piece piece= board.get(start);
 
         // potential illegal moves
         if (!board.containsKey(start) || board.containsKey(end)) return false;
         if (start.equals(end)) return false;
-        if (start.x == end.x && start.y == end.y) return false;
+        if (start.x != end.x && start.y != end.y) return false;
         for (int x = Math.min(start.x, end.x) + 1; x < Math.max(start.x, end.x); x++) if (board.containsKey(new Position(x, start.y))) return false;
         for (int y = Math.min(start.y, end.y) + 1; y < Math.max(start.y, end.y); y++) if (board.containsKey(new Position(start.x, y))) return false;
 
@@ -72,11 +80,11 @@ public class Game {
         return true;
     }
 
-    boolean whiteHasWon(){
+    public boolean whiteHasWon(){
         return CORNERS.contains(king.pos);
     }
 
-    boolean blackHasWon(){
+    public boolean blackHasWon(){
         int x = king.pos.x, y = king.pos.y;
         for (int[] dir: directions){
             int dx = dir[0], dy = dir[1];

@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 
 public class GUI extends Panel {
-    Game game;
+    GameView game;
     BufferedImage buffer;
     int dx;
     int dy;
@@ -16,8 +16,8 @@ public class GUI extends Panel {
     boolean executeMove;
     Random random = new Random();
 
-    GUI(){
-        game = new Game();
+    GUI() throws Exception{
+        game = new Client();
         this.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -28,8 +28,8 @@ public class GUI extends Panel {
             public void mousePressed(MouseEvent e) {
                 int x = e.getX() / dx - 1;
                 int y = e.getY() / dy - 1;
-                if (!game.board.containsKey(new Position(x, y))) return;
-                heldPiece = game.board.get(new Position(x, y));
+                if (game.pieceAt(new Position(x, y)) == null) return;
+                heldPiece = game.pieceAt(new Position(x, y));
             }
 
             @Override
@@ -38,7 +38,7 @@ public class GUI extends Panel {
                 int y = e.getY() / dy - 1;
                 if (heldPiece == null) return;
                 if (x > 10 || y > 10) return;
-                game.move(heldPiece, new Position(x, y));
+                game.move(heldPiece.pos, new Position(x, y));
                 if (game.whiteHasWon()) System.out.printf("white has won\n");
                 if (game.blackHasWon()) System.out.printf("black has won\n");
                 heldPiece = null;
@@ -86,7 +86,7 @@ public class GUI extends Panel {
         g.fillRect(0,0, getWidth(), getHeight());
         g.setColor(Color.WHITE);
 
-        for (Piece piece: game.pieces){
+        for (Piece piece: game.getPieces()){
                 if (heldPiece != null && heldPiece.equals(piece)) continue;
                 if (piece.type == Type.KING) g.fillRect((piece.pos.x+1)*dx, (piece.pos.y+1)*dy, dx, dy);
                 else if (piece.color == Suit.WHITE) g.fillOval((piece.pos.x+1)*dx, (piece.pos.y+1)*dy, dx, dy);
