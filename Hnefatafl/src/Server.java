@@ -17,63 +17,16 @@ public class Server {
     static final byte whiteHasWon = 1;
     static final byte blackHasWon = 2;
 
-    GameView game;
-
     public static void main(String[] args) throws Exception {
-        ServerSocket serverSocket = new ServerSocket(2143);
-        Socket socket1 = serverSocket.accept();
-        //Socket socket2 = serverSocket.accept();
+        ServerSocket serverSocket1 = new ServerSocket(2143);
+        ServerSocket serverSocket2 = new ServerSocket(2144);
         GameView game = new Game();
+        Socket socket1 = serverSocket1.accept();
+        Socket socket2 = serverSocket2.accept();
+        Thread t1 = new ClientServerInteraction(socket1, game);
+        Thread t2 = new ClientServerInteraction(socket2, game);
 
-        Thread t = new Thread() {
-            public void run() {
-                try {
-                    BufferedInputStream in = new BufferedInputStream(socket1.getInputStream());
-                    BufferedOutputStream out = new BufferedOutputStream(socket1.getOutputStream());
-
-                    while (true) {
-                        int request = in.read();
-                        switch (request) {
-                            case requestMove: {
-                                Position start = new Position(in.read(), in.read());
-                                Position end = new Position(in.read(), in.read());
-                                out.write((game.move(start, end) ? 1 : 0));
-                                out.flush();
-                                break;
-                            }
-                            case requestPieceAtPosition: {
-                                Position pos = new Position(in.read(), in.read());
-                                Piece piece = game.pieceAt(pos);
-                                if (piece == null) out.write(isNull);
-                                else out.write(isNotNull);
-                                out.write(new byte[]{(byte) piece.color.ordinal(), (byte) piece.type.ordinal()});
-                                out.flush();
-                                break;
-                            }
-                            case requestPieces: {
-                                TreeSet<Piece> pieces = game.getPieces();
-                                out.write(pieces.size());
-                                for (Piece piece : pieces) {
-                                    out.write(new byte[]{(byte) piece.color.ordinal(), (byte) piece.type.ordinal(), (byte) piece.pos.x, (byte) piece.pos.y});
-                                }
-                                out.flush();
-                                break;
-                            }
-                            case requestWinner: {
-                                if (game.whiteHasWon()) out.write(whiteHasWon);
-                                else if (game.blackHasWon()) out.write(blackHasWon);
-                                else out.write(noWinner);
-                                out.flush();
-                            }
-                        }
-                    }
-                }
-                catch (Exception e) {
-                    System.out.println("server crashed");
-                }
-            }
-        };
-
-        t.start();
+        t1.start();
+        t2.start();
     }
 }
