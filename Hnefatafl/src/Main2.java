@@ -2,7 +2,7 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-public class Main {
+public class Main2 {
 
     public static void main(String args[]) throws Exception{
         Frame frame = new Frame();
@@ -44,7 +44,7 @@ public class Main {
             }
         });
 
-        GUI gui = new GUI(2143);
+        GUI gui = new GUI(2144);
         frame.add(gui);
 
         frame.setVisible(true);

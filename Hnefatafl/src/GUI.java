@@ -16,8 +16,8 @@ public class GUI extends Panel {
     boolean executeMove;
     Random random = new Random();
 
-    GUI() throws Exception{
-        game = new Client();
+    GUI(int port) throws Exception{
+        game = new Client(port);
         this.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {

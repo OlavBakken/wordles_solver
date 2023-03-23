@@ -39,7 +39,10 @@ public class ClientServerInteraction extends Thread{
                     case requestPieceAtPosition: {
                         Position pos = new Position(in.read(), in.read());
                         Piece piece = game.pieceAt(pos);
-                        if (piece == null) out.write(isNull);
+                        if (piece == null){
+                            out.write(isNull);
+                            break;
+                        }
                         else out.write(isNotNull);
                         out.write(new byte[]{(byte) piece.color.ordinal(), (byte) piece.type.ordinal()});
                         out.flush();

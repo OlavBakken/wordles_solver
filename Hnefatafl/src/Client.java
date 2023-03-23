@@ -7,7 +7,7 @@ import java.util.TreeSet;
 
 public class Client implements GameView{
     String serverAdress = "localhost";
-    int serverPort = 2143;
+    int serverPort;
     Socket server;
     BufferedOutputStream out;
     BufferedInputStream in;
@@ -25,7 +25,8 @@ public class Client implements GameView{
     static final Suit[] COLORS = new Suit[]{Suit.WHITE, Suit.BLACK};
     static final Type[] TYPES = new Type[]{Type.KING, Type.PAWN};
 
-    Client() throws Exception{
+    Client(int port) throws Exception{
+        serverPort = port;
         server = new Socket(serverAdress, serverPort);
         out = new BufferedOutputStream(server.getOutputStream());
         in = new BufferedInputStream(server.getInputStream());
