@@ -80,6 +80,10 @@ public class Game implements GameView{
         return true;
     }
 
+    public Suit getOurColour(){
+        return null;
+    }
+
     public boolean whiteHasWon(){
         return CORNERS.contains(king.pos);
     }

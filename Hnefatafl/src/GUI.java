@@ -12,9 +12,6 @@ public class GUI extends Panel {
     int dy;
     Piece heldPiece;
     int mouseX, mouseY;
-    int startX, endX, startY, endY;
-    boolean executeMove;
-    Random random = new Random();
 
     GUI(int port) throws Exception{
         game = new Client(port);

@@ -45,6 +45,7 @@ public class Main {
         });
 
         GUI gui = new GUI(2143);
+        frame.setTitle(gui.game.getOurColour().toString());
         frame.add(gui);
 
         frame.setVisible(true);

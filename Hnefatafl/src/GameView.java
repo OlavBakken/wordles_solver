@@ -5,6 +5,7 @@ public interface GameView {
     public boolean move(Position start, Position end);
     public Piece pieceAt(Position pos);
     public TreeSet<Piece> getPieces();
+    public Suit getOurColour();
     public boolean whiteHasWon();
     public boolean blackHasWon();
 

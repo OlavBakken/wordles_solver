@@ -1,10 +1,5 @@
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.TreeSet;
 
 public class Server {
     static final byte requestMove = 0;
@@ -23,10 +18,7 @@ public class Server {
         GameView game = new Game();
         Socket socket1 = serverSocket1.accept();
         Socket socket2 = serverSocket2.accept();
-        Thread t1 = new ClientServerInteraction(socket1, game);
-        Thread t2 = new ClientServerInteraction(socket2, game);
-
+        Thread t1 = new GameServer(socket1, socket2, game);
         t1.start();
-        t2.start();
     }
 }
