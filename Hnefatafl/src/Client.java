@@ -50,7 +50,7 @@ public class Client implements GameView{
     public boolean move(Position start, Position end){
         try {
             if (game.turn != ourColor) return false;
-            game.move(start, end);
+            if (!game.move(start, end)) return false;
             server.sendMessage(String.format("MOVE:<%d,%d>,<%d,%d>", start.x, start.y, end.x, end.y));
             return true;
         } catch (Exception e){
