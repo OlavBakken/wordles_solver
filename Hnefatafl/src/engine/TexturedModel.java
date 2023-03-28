@@ -119,7 +119,6 @@ public class TexturedModel implements Renderable{
         for (int x = start; x < end; x++){
             if (zbuffer[x][y] < z_inv[x-start]){
                 zbuffer[x][y] = z_inv[x-start];
-                //if (x == 100 && y == 75) System.out.println(1/zbuffer[x][y]);
                 double color_sub = (1 + 0.02/(zbuffer[x][y]*zbuffer[x][y]));
                 int brightness = Math.max(Math.min(255, (int) (255 - 20/zbuffer[x][y])), 0);
                 int color = 0xFFFFFFFF & getPixel(uvxs[x-start], uvys[x-start], texture);
@@ -132,30 +131,11 @@ public class TexturedModel implements Renderable{
                 int color2 = 0xFF000000 | (red<<16) | (green<<8) | blue;
                 int color3 = brightness<<24 | color;
                 buffer.setRGB(x, y, color2);
-                /* if (x == 100 && y == 75) {
-                    String tmp = Integer.toBinaryString(color);
-                    System.out.println(tmp + "");
-                    System.out.printf("%d %d %d\n", red, green, blue);
-                    System.out.println(Integer.toBinaryString(color));
-                    System.out.println();
-                } */
             }
         }
     }
 
-    /* private double[] interpolate(double x0, double y0, double x1, double y1){
-        //System.out.println(x0 + " " + x1);
-        int start = (int) x0+1;
-        int end = (int) x1+1;
-        double results[] = new double[end - start];
-        double a = (y1 - y0) / (x1 - x0);
-        double b = y0 - a*x0;
-        for (int i = 0; i < end  - start; i++) results[i] = a*(start + i) + b;
-        return results;
-    } */
-
     private double[] interpolate(double x0, double y0, double x1, double y1, int clamp0, int clamp1){
-        //System.out.println(x0 + " " + x1);
         int start = Math.max(clamp0, (int) x0+1);
         int end = Math.min(clamp1, (int) x1+1);
         if (start >= end){

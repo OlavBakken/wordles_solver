@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 public class RenderTarget{
 
     int WIDTH, HEIGHT;
-    BufferedImage buffer = new BufferedImage(100, 100, BufferedImage.TYPE_4BYTE_ABGR);
+    BufferedImage buffer;
     double[][] zbuffer;
     int[][] idbuffer;
 
