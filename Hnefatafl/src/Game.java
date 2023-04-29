@@ -5,10 +5,8 @@ public class Game implements GameView{
     static final Suit BLACK = Suit.BLACK;
     static final Type KING = Type.KING;
     static final Type PAWN = Type.PAWN;
-    static final TreeSet<Position> CORNERS = new TreeSet<>(List.of(new Position[]{new Position(0, 0),
-                                                                                                        new Position(0, 10),
-                                                                                                        new Position(10, 0),
-                                                                                                        new Position(10, 10)}));
+    static final TreeSet<Position> CORNERS = new TreeSet<Position>();
+
     static final Position CENTER = new Position(5, 5);
 
     Piece king;
@@ -81,7 +79,7 @@ public class Game implements GameView{
     }
 
     public Suit getOurColour(){
-        return null;
+        return Suit.UNIVERSAL;
     }
 
     public boolean whiteHasWon(){
@@ -99,6 +97,11 @@ public class Game implements GameView{
     }
 
     Game(){
+        CORNERS.add(new Position(0, 0));
+        CORNERS.add(new Position(10, 0));
+        CORNERS.add(new Position(0, 10));
+        CORNERS.add(new Position(10, 10));
+
         pieces = new TreeSet<>();
         board = new TreeMap<>();
 

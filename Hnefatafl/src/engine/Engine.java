@@ -2,7 +2,6 @@ package engine;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Properties;
 
 public abstract class Engine {
     ArrayList<GameObject> gameObjects;

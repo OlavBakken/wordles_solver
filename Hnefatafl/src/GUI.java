@@ -14,7 +14,7 @@ public class GUI extends Panel {
     int mouseX, mouseY;
 
     GUI(int port) throws Exception{
-        game = new Client(port);
+        game = new Game();
         this.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {

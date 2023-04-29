@@ -29,7 +29,9 @@ public class MessagePasser {
     public String receiveMessage() throws Exception{
         int n = in.read();
         String message = "";
-        for (byte c: in.readNBytes(n)) message += (char) c;
+        byte bytes[] = new byte[n];
+        in.read(bytes, 0, n);
+        for (byte c: bytes) message += (char) c;
         return message;
     }
 
