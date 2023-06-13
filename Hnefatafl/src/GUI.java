@@ -83,6 +83,11 @@ public class GUI extends Panel {
         g.fillRect(0,0, getWidth(), getHeight());
         g.setColor(Color.WHITE);
 
+        for (int i = 1; i <= 12; i++){
+            g.drawLine(dx, i*dy, 12*dx, i*dy);
+            g.drawLine(i*dx, dy, i*dx, 12*dy);
+        }
+
         for (Piece piece: game.getPieces()){
                 if (heldPiece != null && heldPiece.equals(piece)) continue;
                 if (piece.type == Type.KING) g.fillRect((piece.pos.x+1)*dx, (piece.pos.y+1)*dy, dx, dy);
