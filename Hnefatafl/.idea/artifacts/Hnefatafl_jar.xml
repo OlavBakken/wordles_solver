@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Hnefatafl:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Hnefatafl_jar</output-path>
+    <root id="archive" name="Hnefatafl.jar">
+      <element id="module-output" name="Hnefatafl" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,96 @@
+<html>
+<head>
+<title>Bulls Game</title>
+</head>
+<body style="center">
+<div style="margin: auto; width: 256px">
+<img src="opponent.png" id="ill"/>
+<div id="log" style="margin: auto; width: 192px;"/>
+<div id="input" style="position: absolute; bottom: 0px;">
+<table>
+	<tr>
+		<th style="border: 1px solid #000000" onclick="pick(1)">1</th>
+		<th style="border: 1px solid #000000" onclick="pick(2)">2</th>
+		<th style="border: 1px solid #000000" onclick="pick(3)">3</th>
+		<th style="border: 1px solid #000000" onclick="pick(4)">4</th>
+		<th style="border: 1px solid #000000" onclick="pick(5)">5</th>
+		<th style="border: 1px solid #000000" onclick="pick(6)">6</th>
+		<th style="border: 1px solid #000000" onclick="pick(7)">7</th>
+		<th style="border: 1px solid #000000" onclick="pick(8)">8</th>
+		<th style="border: 1px solid #000000" onclick="pick(9)">9</th>
+	</tr>
+</table>
+</div>
+</div>
+</body>
+<script>
+	partial_guess = []
+	answer = [1, 2, 3, 4]
+
+	function pick(i){
+		partial_guess += [i];
+		console.log(i)
+		if (partial_guess.length == 4){
+			let m = check(partial_guess, answer)[0];
+			let p = check(partial_guess, answer)[1];
+			document.getElementById("log").innerHTML += createLogLeft(partial_guess, pad(m, p));
+			partial_guess = []
+		}
+	}
+
+	function pad(m, p){
+		s = "";
+		for (i = 0; i < m; i++) s+="o";
+		for (i = 0; i < p; i++) s+="x";
+		return s;
+	}
+
+	function check(guess, answer){
+		let matches = 0;
+		let partial = 0;
+		for (i = 0; i < 4; i++){
+			if (guess[i] == answer[i]){
+				matches += 1;
+			}
+			else {
+				for (j = 0; j < 4; j++){
+					if (guess[i] == answer[j]){
+						partial += 1;
+						break;
+					}
+				}
+			}
+		}
+		console.log( [matches, partial])
+		return [matches, partial];
+	}
+
+	function createLogLeft(guess, answer){
+		guess1 = guess[0];
+		guess2 = guess[1];
+		guess3 = guess[2];
+		guess4 = guess[3];
+		return "<div style='border: 1px solid #FFFFFF;'> <div style='border: 1px solid #000000;'> <table> <tr>" +
+				"<th style='border: 2px solid #00BF7F;'>" + guess1 + "</th>" +
+				"<th style='border: 2px solid #00BF7F;'>" + guess2 + "</th>" +
+				"<th style='border: 2px solid #00BF7F;'>" + guess3 + "</th>" +
+				"<th style='border: 2px solid #00BF7F;'>" + guess4 + "</th>" +
+				"<th style='border: 2px solid #73AD21;'>" + answer + "</th>" +
+			"</tr> </table> </div> </div> ";
+	}
+
+	function createLogRight(guess, answer){
+		guess1 = Math.floor(guess / 1000) % 10;
+		guess2 = Math.floor(guess / 100)  % 10;
+		guess3 = Math.floor(guess / 10)   % 10;
+		guess4 = Math.floor(guess / 1)    % 10;
+		return "<div style='border: 1px solid #FFFFFF;'> <div style='border: 1px solid #000000;'> <div style='margin-left: 90px;'> <table> <tr>" +
+				"<th style='border: 2px solid #00BF7F;'>" + guess1 + "</th>" +
+				"<th style='border: 2px solid #00BF7F;'>" + guess2 + "</th>" +
+				"<th style='border: 2px solid #00BF7F;'>" + guess3 + "</th>" +
+				"<th style='border: 2px solid #00BF7F;'>" + guess4 + "</th>" +
+				"<th style='border: 2px solid #73AD21;'>" + answer + "</th>" +
+			"</tr> </table> </div> </div> </div>";
+	}
+</script>
+</html>
